@@ -1,0 +1,85 @@
+body {
+    font-family: 'Crete Round', serif;
+    padding: 20px;
+    background-color: #eee;
+    font-size: 14px;
+    line-height: 1.5em;
+}
+
+h1 {
+    margin-top: 20px;
+    font-size: 100px;
+    line-height: 1.15em;
+    margin-bottom: 20px;
+}
+
+.input-basic {
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 3px;
+    box-shadow: none;
+    font-size: 13px;
+    border: 1px solid #ccc;
+}
+
+.run-settings {
+    margin: 30px 0 20px;
+}
+
+.run-settings .runs input {
+    width: 60px;
+}
+
+.button-basic {
+    border: 0;
+    border-radius: 20px;
+    box-shadow: none;
+    background-color: #5790c1;
+    color: #fff;
+    padding: 9px 20px;
+    font-size: 17px;
+    min-width: 200px;
+}
+
+.button-basic:hover {
+    opacity: 0.9;
+}
+
+.benchmark-score {
+    font-family: Monospaced, Courier;
+    font-size: 24px;
+    height: 20px;
+    padding-left: 10px;
+    padding-top: 20px;
+}
+
+.benchmark-results {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+}
+
+.benchmark-results .test-names {
+    font-family: Monospaced, Courier;
+    width: 350px;
+    height: 2000px;
+    border: none;
+    resize: none;
+    padding: 10px;
+    font-size: 14px;
+    line-height: 1.5em;
+    background-color: transparent;
+}
+
+.benchmark-results .test-durations {
+    font-family: Monospaced, Courier;
+    width: 120px;
+    height: 2000px;
+    border: none;
+    resize: none;
+    padding: 10px;
+    font-size: 14px;
+    line-height: 1.5em;
+    background-color: transparent;
+    text-align: right;
+}

@@ -1,0 +1,52 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Web Audio Bench</title>
+    <link href="https://fonts.googleapis.com/css?family=Crete+Round&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+
+
+<h1>Web Audio Bench</h1>
+
+<p>This page contains a series of web audio benchmark tests. The tests are run in an OfflineAudioContext, where an AudioBufferSourceNode is used as baseline to feed data into the test.
+    To get more accurate results, each test is run multiple times and the median duration is chosen. The results are given in microseconds per second of processed audio data and node, so lower is
+    faster. A value of 1000000 means realtime processing speed.</p>
+
+<p>For accurate results:</p>
+
+<ul>
+    <li>Make sure you are connected to power</li>
+    <li>Close ALL other apps and browser tabs.</li>
+    <li>Verify in Activity Monitor / Task Manager that the computer is idle.</li>
+    <li>Use an incognito window (disables extensions)</li>
+</ul>
+
+<div class="run-settings">
+    <div class="runs">
+        <label>Test runs:</label>
+        <input type="text" class="input-basic" value="5"/>
+    </div>
+</div>
+<button class="run-button button-basic">RUN BENCHMARK</button>
+<div class="benchmark-score"></div>
+<div class="benchmark-results">
+    <div class="test-names"></div>
+</div>
+
+<script src="js/Test.js"></script>
+<script src="js/Benchmark.js"></script>
+<script src="js/WebAudioBenchApplication.js"></script>
+<script>
+  // bootstrap the application
+  const webAudioBenchApplication = new WebAudioBenchApplication();
+</script>
+
+</body>
+</html>
