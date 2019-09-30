@@ -45,14 +45,6 @@ h1 {
     opacity: 0.9;
 }
 
-.benchmark-score {
-    font-family: Monospaced, Courier;
-    font-size: 24px;
-    height: 20px;
-    padding-left: 10px;
-    padding-top: 20px;
-}
-
 .benchmark-results {
     margin-top: 40px;
     display: flex;

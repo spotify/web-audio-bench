@@ -24,7 +24,6 @@ const DEFAULT_RENDER_SECONDS = 300;
 class WebAudioBenchApplication {
   constructor() {
     this.testNames = document.querySelector('.test-names');
-    this.benchmarkScore = document.querySelector('.benchmark-score');
 
     this.runButton = document.querySelector('.run-button');
     this.runButton.addEventListener('mousedown', () => {
@@ -44,8 +43,6 @@ class WebAudioBenchApplication {
       this.testDurations = document.createElement('div');
       this.testDurations.setAttribute('contenteditable', 'true');
       this.testDurations.classList.add('test-durations');
-
-      this.benchmarkScore.innerText = '';
 
       document.querySelector('.benchmark-results').appendChild(this.testDurations);
       const headline = document.createElement('div');
@@ -142,7 +139,7 @@ class WebAudioBenchApplication {
     chain = chain.then(() => {
       const benchmark = new MixedBenchmark(this.testResults);
       const score = benchmark.calculate();
-      this.benchmarkScore.innerHTML = benchmark.name + ': ' + Math.round(score) + ' microseconds';
+      this.outputResult(benchmark.name, Math.round(score));
     });
     return chain;
   }
