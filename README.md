@@ -12,7 +12,8 @@ The example below compares different browsers on Mac. Lower values are better. I
 * The performance is similar across browsers for AudioBufferSourceNode and OscillatorNode.
 * There are big variations in GainNode and BiquadFilterNode automation performance. 
 * The most expensive node types are CompressorNode and the nodes involving FFT; WaveShaperNode, ConvolverNode and PannerNode, with variations across browsers.
-* The **MixedBenchmark** metric is a compound score using a handful of the most commonly used nodes. It can be used as an overall score for a given platform and browser.
+* Safari has the fastest baseline and most nodes are a bit faster. This could indicate faster framework, such as a more efficient audio graph traversal / audio data propagation.
+* The MixedBenchmark metric is a compound score using a handful of the most commonly used nodes. It can be used as an overall score for a given platform and browser.
 
 ![Example Graph](doc/mac_graph.png)
 
