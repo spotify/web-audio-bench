@@ -7,9 +7,14 @@ Web Audio Bench is a test suite for comparing web audio performance across devic
 
 ## Example
 
-![Example Graph](doc/example_graph.png)
+The example below compares different browsers on Mac. Lower values are better. It shows:
 
-Example outputs can be found [here](doc/Example.md).
+* The performance is similar across browsers for AudioBufferSourceNode and OscillatorNode.
+* There are big variations in GainNode and BiquadFilterNode automation performance. 
+* The most expensive node types are CompressorNode and the nodes involving FFT; WaveShaperNode, ConvolverNode and PannerNode, with variations across browsers.
+* The **MixedBenchmark** metric is a compound score using a handful of the most commonly used nodes. It can be used as an overall score for a given platform and browser.
+
+![Example Graph](doc/mac_graph.png)
 
 ## About
 
@@ -23,6 +28,9 @@ It can be used to identify regressions as well as optimisation opportunities. It
 
 The second goal is to allow Web Audio developers to write custom tests to compare the relative performance of different graph layouts. For this, you'll need to fork this project and add your own
 custom test implementations.
+
+* [More examples](doc/Example.md)
+* [Source code for tests](js/Test.js)
 
 # Running
 
