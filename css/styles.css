@@ -13,6 +13,12 @@ h1 {
     margin-bottom: 20px;
 }
 
+.fork-me-ribbon {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
 .input-basic {
     padding: 5px 10px;
     margin-left: 10px;

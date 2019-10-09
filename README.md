@@ -35,7 +35,7 @@ custom test implementations.
 
 # Running
 
-To run the benchmark, you can either visit the GitHub project page (above) or clone this repo and open index.html in your browser.
+To run the benchmark, go to [https://spotify.github.io/web-audio-bench/](https://spotify.github.io/web-audio-bench/) or clone this repo and open index.html in your browser.
 
 Alternatively, use an http server, e.g.:
 
