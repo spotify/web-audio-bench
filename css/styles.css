@@ -1,7 +1,8 @@
 body {
     font-family: 'Crete Round', serif;
     padding: 20px;
-    background-color: #eee;
+    background-color: #fff;
+    color: #000;
     font-size: 14px;
     line-height: 1.5em;
 }
@@ -11,6 +12,7 @@ h1 {
     font-size: 100px;
     line-height: 1.15em;
     margin-bottom: 20px;
+    color: #333;
 }
 
 .fork-me-ribbon {
@@ -19,21 +21,50 @@ h1 {
     right: 0;
 }
 
+.mid-section {
+    display: flex;
+    flex-direction: row;
+    margin: 30px 0 40px;
+}
+
+.mid-section .control-column {
+    width: 470px;
+}
+
 .input-basic {
+    box-sizing: border-box;
     padding: 5px 10px;
-    margin-left: 10px;
     border-radius: 3px;
     box-shadow: none;
     font-size: 13px;
     border: 1px solid #ccc;
 }
 
-.run-settings {
-    margin: 30px 0 20px;
+.select-basic {
+    font-family: 'Crete Round', serif;
+    box-sizing: border-box;
+    border-radius: 3px;
+    box-shadow: none;
+    font-size: 13px;
+    border: 1px solid #ccc;
+}
+
+.run-settings .control {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.run-settings .control label {
+    width: 100px;
 }
 
 .run-settings .runs input {
-    width: 60px;
+    width: 250px;
+}
+
+.run-settings .tests-selection select {
+    width: 250px;
+    height: 250px;
 }
 
 .button-basic {
@@ -52,32 +83,14 @@ h1 {
 }
 
 .benchmark-results {
-    margin-top: 40px;
-    display: flex;
-    flex-direction: row;
+    font-family: Monospaced, Courier;
+    width: 400px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.5em;
+    white-space: pre;
 }
 
-.benchmark-results .test-names {
-    font-family: Monospaced, Courier;
-    width: 350px;
-    height: 2000px;
-    border: none;
-    resize: none;
-    padding: 10px;
-    font-size: 14px;
-    line-height: 1.5em;
-    background-color: transparent;
-}
-
-.benchmark-results .test-durations {
-    font-family: Monospaced, Courier;
-    width: 120px;
-    height: 2000px;
-    border: none;
-    resize: none;
-    padding: 10px;
-    font-size: 14px;
-    line-height: 1.5em;
-    background-color: transparent;
-    text-align: right;
+.benchmark-results span {
+    float: right;
 }

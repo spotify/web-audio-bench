@@ -31,15 +31,27 @@
     <li>Use an incognito window (disables extensions)</li>
 </ul>
 
-<div class="run-settings">
-    <div class="runs">
-        <label>Test runs:</label>
-        <input type="text" class="input-basic" value="5"/>
+<div class="mid-section">
+    <div class="control-column">
+        <div class="run-settings">
+            <div class="control tests-selection">
+                <label>Tests:</label>
+                <select class="select-basic" multiple>
+                </select>
+            </div>
+            <div class="control runs">
+                <label>Test runs:</label>
+                <input type="text" class="input-basic" value="5"/>
+            </div>
+            <div class="control actions">
+                <label></label>
+                <button class="run-button button-basic">RUN BENCHMARK</button>
+            </div>
+        </div>
     </div>
-</div>
-<button class="run-button button-basic">RUN BENCHMARK</button>
-<div class="benchmark-results">
-    <div class="test-names"></div>
+    <div>
+        <div class="benchmark-results"></div>
+    </div>
 </div>
 
 <script src="js/Test.js"></script>

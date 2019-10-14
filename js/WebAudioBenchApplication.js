@@ -23,37 +23,47 @@ const DEFAULT_RENDER_SECONDS = 300;
 
 class WebAudioBenchApplication {
   constructor() {
-    this.testNames = document.querySelector('.test-names');
+    this.testsSelection = document.querySelector('.tests-selection select');
+    const tests = this.getTestList();
+    tests.forEach((test) => {
+      const option = document.createElement('option');
+      option.value = test.name;
+      option.innerText = test.name;
+      option.selected = true;
+      this.testsSelection.appendChild(option);
+    });
 
+    this.benchmarkResults = document.querySelector('.benchmark-results');
     this.runButton = document.querySelector('.run-button');
     this.runButton.addEventListener('mousedown', () => {
-      this.testRuns = parseInt(document.querySelector('.run-settings .runs input').value);
+      const testRuns = parseInt(document.querySelector('.run-settings .runs input').value);
       if (Number.isNaN(this.testRuns) || this.testRuns < 1 || this.testRuns > 1000) {
         alert("The number of test runs is invalid.");
         return;
       }
 
+      const testNames = [];
+      for(let i = 0; i < this.testsSelection.options.length; i++) {
+        const option = this.testsSelection.options[i];
+        if (option.selected) {
+          testNames.push(option.value);
+        }
+      }
+
+      if(testNames.length === 0) {
+        alert("Please select one or more tests.");
+        return;
+      }
+
       this.runButton.disabled = true;
 
-      this.testNames.innerHTML = '';
-      const nameHeadline = document.createElement('div');
-      nameHeadline.innerText = 'TEST';
-      this.testNames.appendChild(nameHeadline);
-
-      this.testDurations = document.createElement('div');
-      this.testDurations.setAttribute('contenteditable', 'true');
-      this.testDurations.classList.add('test-durations');
-
-      document.querySelector('.benchmark-results').appendChild(this.testDurations);
-      const headline = document.createElement('div');
-      headline.innerText = 'MICROSECONDS';
-      this.testDurations.appendChild(headline);
-
+      this.benchmarkResults.innerHTML = "";
       this.testResults = {};
+
 
       const origText = this.runButton.innerText;
       this.runButton.innerText = '...';
-      this.runTests().then(() => {
+      this.runTests(testNames, testRuns).finally(() => {
         this.runButton.innerText = origText;
         this.runButton.disabled = false;
       });
@@ -115,8 +125,8 @@ class WebAudioBenchApplication {
     ];
   }
 
-  runTests() {
-    const baselineRuns = this.testRuns * 2;
+  runTests(testNames, testRuns) {
+    const baselineRuns = testRuns * 2;
     const tests = this.getTestList();
     const baselineTest = new Test('Baseline', 1);
     let baseline = 0;
@@ -125,9 +135,9 @@ class WebAudioBenchApplication {
       this.storeResult(baselineTest.name, durations);
     });
 
-    tests.forEach((test) => {
+    tests.filter((test) => testNames.indexOf(test.name) !== -1).forEach((test) => {
       chain = chain.then(() => {
-        return this.runTest(test, this.testRuns).then((durations) => {
+        return this.runTest(test, testRuns).then((durations) => {
           durations = durations.map((d) => (d - baseline) / test.numNodes);
           this.storeResult(test.name, durations);
         }, (error) => {
@@ -189,11 +199,10 @@ class WebAudioBenchApplication {
 
   outputResult(name, duration) {
     const nameElem = document.createElement('div');
-    nameElem.innerText = name;
-    this.testNames.appendChild(nameElem);
-
-    let elem = document.createElement('div');
-    elem.innerText = duration;
-    this.testDurations.appendChild(elem);
+    nameElem.appendChild(new Text(name));
+    const durElem = document.createElement('span');
+    durElem.innerText = duration;
+    nameElem.appendChild(durElem);
+    this.benchmarkResults.appendChild(nameElem);
   }
 }

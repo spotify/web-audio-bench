@@ -37,7 +37,7 @@ class Benchmark {
    */
   calcScore(name, multiplier) {
     if (this.testResults[name] === undefined) {
-      throw new Error('No such test name: ' + name);
+      throw new Error('Cannot run benchmark, test not run: ' + name);
     }
     return this.testResults[name] * multiplier;
   }
