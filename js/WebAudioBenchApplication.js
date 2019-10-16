@@ -33,7 +33,7 @@ class WebAudioBenchApplication {
       this.testsSelection.appendChild(option);
     });
 
-    this.benchmarkResults = document.querySelector('.benchmark-results');
+    this.resultsTable = document.querySelector('.results-table');
     this.runButton = document.querySelector('.run-button');
     this.runButton.addEventListener('mousedown', () => {
       const testRuns = parseInt(document.querySelector('.run-settings .runs input').value);
@@ -57,7 +57,7 @@ class WebAudioBenchApplication {
 
       this.runButton.disabled = true;
 
-      this.benchmarkResults.innerHTML = "";
+      this.resultsTable.querySelectorAll('tr:not(.header)').forEach(elem => elem.remove());
       this.testResults = {};
 
 
@@ -149,7 +149,7 @@ class WebAudioBenchApplication {
     chain = chain.then(() => {
       const benchmark = new MixedBenchmark(this.testResults);
       const score = benchmark.calculate();
-      this.outputResult(benchmark.name, Math.round(score));
+      this.outputResult(benchmark.name, 0, 0, Math.round(score), 0, 0, false);
     });
     return chain;
   }
@@ -178,31 +178,44 @@ class WebAudioBenchApplication {
   storeError(name, error) {
     console.warn(name + ' returned error: ', error);
 
-    this.outputResult(name, '-');
+    this.outputResult(name, 0, 0, 0, 0, 0, false);
   }
 
   storeResult(name, durations) {
     durations = durations.map((d) => Math.round(d * 1000 * 1000));
     durations.sort((a, b) => a - b);
 
-    // TODO: Is this the most scientifically correct way to do it?
-    // We don't pick the mean because sometimes there are extreme delay (outlier values).
-    // We pick the median to filter out outlier values.
-    const medianDuration = durations[Math.floor(durations.length / 2)];
+    const min = durations[0];
+    const q1 = durations[Math.floor(durations.length * 0.25)];
+    const median = durations[Math.floor(durations.length / 2)];
+    const q3 = durations[Math.floor(durations.length * 0.75)];
+    const max = durations[durations.length - 1];
 
-    console.log('median ' + medianDuration + ' (' + durations + ')');
+    console.log('median ' + median + ' (' + durations + ')');
 
-    this.testResults[name] = medianDuration;
+    this.testResults[name] = median;
 
-    this.outputResult(name, "" + Math.round(medianDuration));
+    const showDetails = durations.length >= 5;
+    this.outputResult(name, min, q1, median, q3, max, showDetails);
   }
 
-  outputResult(name, duration) {
-    const nameElem = document.createElement('div');
-    nameElem.appendChild(new Text(name));
-    const durElem = document.createElement('span');
-    durElem.innerText = duration;
-    nameElem.appendChild(durElem);
-    this.benchmarkResults.appendChild(nameElem);
+  outputResult(name, min, q1, median, q3, max, showDetails) {
+    const cells = [name, "" + Math.round(median)];
+    if (showDetails) {
+      [min, q1, median, q3, max].map(v => "" + Math.round(v)).forEach(v => cells.push(v));
+    }
+    this.outputRow(cells);
+  }
+
+  outputRow(cells) {
+    const tr = document.createElement('tr');
+
+    cells.forEach((v => {
+      const td = document.createElement('td');
+      td.innerText = v;
+      tr.appendChild(td);
+    }));
+
+    this.resultsTable.appendChild(tr);
   }
 }

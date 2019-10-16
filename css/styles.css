@@ -82,15 +82,34 @@ h1 {
     opacity: 0.9;
 }
 
-.benchmark-results {
+.results-table {
     font-family: Monospaced, Courier;
-    width: 400px;
     font-size: 16px;
-    font-weight: bold;
     line-height: 1.5em;
     white-space: pre;
 }
 
-.benchmark-results span {
-    float: right;
+.results-table th {
+    width: 80px;
+    font-weight: bold;
+    text-align: right;
+}
+
+.results-table td {
+    width: 80px;
+    text-align: right;
+}
+
+.results-table td:nth-child(1), .results-table th:nth-child(1) {
+    text-align: left;
+    width: 300px;
+    font-weight: bold;
+}
+
+.results-table td:nth-child(2), .results-table th:nth-child(2) {
+    font-weight: bold;
+}
+
+.results-table td:nth-child(3), .results-table th:nth-child(3) {
+    width: 250px;
 }
