@@ -294,6 +294,25 @@ class GainAutomationTest extends Test {
   }
 }
 
+class GainAutomationConnTest extends Test {
+  constructor(automationRate) {
+    super('GainAutomationConn-' + automationRate, 12);
+    this.automationRate = automationRate;
+  }
+
+  buildGraph(ctx, last) {
+    const source = last;
+    for (let i = 0; i < this.numNodes; i++) {
+      const node = ctx.createGain();
+      node.gain.automationRate = this.automationRate;
+      source.connect(node.gain);
+      last.connect(node);
+      last = node;
+    }
+    return last;
+  }
+}
+
 class CompressorTest extends Test {
   constructor(knee) {
     super('Compressor-knee-' + knee, 1);

@@ -92,6 +92,8 @@ class WebAudioBenchApplication {
       new GainAutomationTest('linear', 'k-rate'),
       new GainAutomationTest('target', 'k-rate'),
       new GainAutomationTest('curve', 'k-rate'),
+      new GainAutomationConnTest('a-rate'),
+      new GainAutomationConnTest('k-rate'),
       new BiquadFilterAutomationTest('exp', 'a-rate'),
       new BiquadFilterAutomationTest('linear', 'a-rate'),
       new BiquadFilterAutomationTest('target', 'a-rate'),
