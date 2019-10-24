@@ -46,8 +46,9 @@ Then, open http://localhost:7777
 
 ### Safari note
 
-2019-09-11: A memory leak in Safari makes the browser tab crash after 50 test runs or so. To avoid it, reduce number of test runs to 1. If this doesn't help, reduce the test duration to 100 seconds or
-even lower, see `DEFAULT_RENDER_SECONDS` in `WebAudioBenchApplication.js`.
+2019-09-11: A memory leak in Safari makes the browser tab crash after 50 test runs or so. To avoid it, reduce number of test runs. If this doesn't help, reduce the test duration too.
+
+Also note that Safari time resolution is limited to 1ms, so the default test duration is set to 5x longer than on other browsers.
 
 # Developing
 
@@ -56,10 +57,9 @@ example, we can provide different `knee`-values and see how this affects perform
 
 After having written your test, add it to the list of tests in `WebAudioBenchApplication.getTestList()`.
 
-In order to get fast test runs while not measuring too short time periods, all tests have been tuned to take approximately 500 ms on a MacBook Pro 2017 (3,1 GHz Intel Core i7) when running in Chrome 78. When adding your
+In order to get fast test runs while not measuring too short time periods, all tests have been tuned to take approximately 50 ms on a MacBook Pro 2017 (3,1 GHz Intel Core i7) when running in Chrome 78. When adding your
 own tests, try to make them run roughly as long. You can tune the test duration by setting `numNodes` in the `Test` constructor, which will indicate how many
-nodes you intend to test on in parallel. The total duration of your test will then be divided by this number. You can also tune the test duration by reducing the length of the test audio signal, see
-`DEFAULT_RENDER_SECONDS`.
+nodes you intend to test on in parallel. The total duration of your test will then be divided by this number.
 
 ## Contributing
 
