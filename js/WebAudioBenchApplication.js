@@ -211,16 +211,16 @@ class WebAudioBenchApplication {
     const q3 = durations[Math.floor(durations.length * 0.75)];
     const max = durations[durations.length - 1];
 
-    console.log('median ' + median + ' (' + durations + ')');
+    console.log('min ' + min + ' (' + durations + ')');
 
-    this.testResults[name] = median;
+    this.testResults[name] = min;
 
     const showDetails = durations.length >= 5;
     this.outputResult(name, min, q1, median, q3, max, showDetails);
   }
 
   outputResult(name, min, q1, median, q3, max, showDetails) {
-    const cells = [name, "" + Math.round(median)];
+    const cells = [name, "" + Math.round(min)];
     if (showDetails) {
       [min, q1, median, q3, max].map(v => "" + Math.round(v)).forEach(v => cells.push(v));
     }
