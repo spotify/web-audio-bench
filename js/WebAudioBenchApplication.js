@@ -130,7 +130,7 @@ class WebAudioBenchApplication {
   runTests(testNames, testRuns) {
     const baselineRuns = testRuns * 2;
     const tests = this.getTestList();
-    const baselineTest = new Test('Baseline', 1);
+    const baselineTest = new Test('Baseline', 1, 4);
     let baseline = 0;
     let chain = this.runTest(baselineTest, baselineRuns).then((durations) => {
       baseline = Math.min(...durations);
