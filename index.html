@@ -19,7 +19,7 @@
 <h1>Web Audio Bench</h1>
 
 <p>This page contains a series of web audio benchmark tests. The tests are run in an OfflineAudioContext, where an AudioBufferSourceNode is used as baseline to feed data into the test.
-    To get more accurate results, each test is run multiple times and the median duration is chosen. The results are given in microseconds per second of processed audio data and node, so lower is
+    To get more accurate results, each test is run multiple times and the min duration is chosen (<a href="https://lemire.me/blog/2018/01/16/microbenchmarking-calls-for-idealized-conditions/" target="_blank">here's why</a>). The results are given in microseconds per second of processed audio data and node, so lower is
     faster. A value of 1000000 means realtime processing speed.</p>
 
 <p>For accurate results:</p>
@@ -29,6 +29,7 @@
     <li>Close ALL other apps and browser tabs.</li>
     <li>Verify in Activity Monitor / Task Manager that the computer is idle.</li>
     <li>Use an incognito window (disables extensions)</li>
+    <li>Firefox: set privacy.reduceTimerPrecision to false in about:config</li>
 </ul>
 
 <div class="mid-section">
@@ -41,7 +42,11 @@
             </div>
             <div class="control runs">
                 <label>Test runs:</label>
-                <input type="text" class="input-basic" value="5"/>
+                <input type="text" class="input-basic" value="500"/>
+            </div>
+            <div class="control duration">
+                <label>Seconds:</label>
+                <input type="text" class="input-basic" value="20"/>
             </div>
             <div class="control actions">
                 <label></label>

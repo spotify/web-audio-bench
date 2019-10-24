@@ -19,8 +19,6 @@
  * under the License.
  */
 
-const DEFAULT_RENDER_SECONDS = 300;
-
 class WebAudioBenchApplication {
   constructor() {
     this.testsSelection = document.querySelector('.tests-selection select');
@@ -33,12 +31,33 @@ class WebAudioBenchApplication {
       this.testsSelection.appendChild(option);
     });
 
+    const runsInputElement = document.querySelector('.run-settings .runs input');
+    const durationInputElement = document.querySelector('.run-settings .duration input');
+    const ua = navigator.userAgent.toLowerCase();
+    if (ua.indexOf('safari') !== -1 && ua.indexOf('chrome') === -1) {
+      // Safari.
+      // 1ms resolution forces us to run longer tests, giving lower precision.
+      // See https://github.com/w3c/hr-time/issues/56
+      runsInputElement.value = 50;
+      durationInputElement.value = 200;
+    } else {
+      // Other browsers.
+      runsInputElement.value = 500;
+      durationInputElement.value = 20;
+    }
+
     this.resultsTable = document.querySelector('.results-table');
     this.runButton = document.querySelector('.run-button');
     this.runButton.addEventListener('mousedown', () => {
-      const testRuns = parseInt(document.querySelector('.run-settings .runs input').value);
-      if (Number.isNaN(this.testRuns) || this.testRuns < 1 || this.testRuns > 1000) {
+      const testRuns = parseInt(runsInputElement.value);
+      if (Number.isNaN(testRuns) || testRuns < 1) {
         alert("The number of test runs is invalid.");
+        return;
+      }
+
+      const defaultRenderDuration = parseInt(durationInputElement.value);
+      if (Number.isNaN(defaultRenderDuration) || defaultRenderDuration < 1) {
+        alert("The duration is invalid.");
         return;
       }
 
@@ -63,7 +82,7 @@ class WebAudioBenchApplication {
 
       const origText = this.runButton.innerText;
       this.runButton.innerText = '...';
-      this.runTests(testNames, testRuns).finally(() => {
+      this.runTests(testNames, testRuns, defaultRenderDuration).finally(() => {
         this.runButton.innerText = origText;
         this.runButton.disabled = false;
       });
@@ -127,19 +146,18 @@ class WebAudioBenchApplication {
     ];
   }
 
-  runTests(testNames, testRuns) {
-    const baselineRuns = testRuns * 2;
+  runTests(testNames, testRuns, defaultRenderDuration) {
     const tests = this.getTestList();
     const baselineTest = new Test('Baseline', 1, 4);
     let baseline = 0;
-    let chain = this.runTest(baselineTest, baselineRuns).then((durations) => {
+    let chain = this.runTest(baselineTest, testRuns, defaultRenderDuration).then((durations) => {
       baseline = Math.min(...durations);
       this.storeResult(baselineTest.name, durations);
     });
 
     tests.filter((test) => testNames.indexOf(test.name) !== -1).forEach((test) => {
       chain = chain.then(() => {
-        return this.runTest(test, testRuns).then((durations) => {
+        return this.runTest(test, testRuns, defaultRenderDuration).then((durations) => {
           durations = durations.map((d) => (d - baseline) / test.numNodes);
           this.storeResult(test.name, durations);
         }, (error) => {
@@ -151,15 +169,15 @@ class WebAudioBenchApplication {
     chain = chain.then(() => {
       const benchmark = new MixedBenchmark(this.testResults);
       const score = benchmark.calculate();
-      this.outputResult(benchmark.name, 0, 0, Math.round(score), 0, 0, false);
+      this.outputResult(benchmark.name, score, score, score, score, score, false);
     });
     return chain;
   }
 
-  runTest(test, numRuns) {
-    const renderSeconds = DEFAULT_RENDER_SECONDS * test.durationFactor;
+  runTest(test, numRuns, defaultRenderSeconds) {
+    const renderSeconds = defaultRenderSeconds * test.durationFactor;
     const durations = [];
-    let chain;
+    let chain = undefined;
     console.log('Running ' + test.name);
     for(let i = 0; i < numRuns; i++) {
       if (chain === undefined) {
