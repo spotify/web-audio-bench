@@ -85,12 +85,12 @@ class Test {
       let startTime;
       // cooling period
       setTimeout(() => {
-        startTime = new Date().getTime();
+        startTime = window.performance.now();
         ctx.startRendering();
-      }, 500);
+      }, 10);
 
-      ctx.oncomplete = (_) => {
-        const endTime = new Date().getTime();
+      ctx.oncomplete = (event) => {
+        const endTime = event.timeStamp;
         const duration = (endTime - startTime) / 1000;
         resolve(duration);
       };
