@@ -71,6 +71,7 @@ class Test {
         source.loop = true;
         source.loopStart = 0;
         source.loopEnd = 1;
+        source.playbackRate.value = 0.9;
         source.start(0);
 
         let last = this.buildGraph(ctx, source);
