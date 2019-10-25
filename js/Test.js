@@ -60,7 +60,9 @@ class Test {
       const ctx = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(1, sampleRate * duration, sampleRate);
 
       try {
-        // we use an AudioBufferSourceNode as baseline, it's cheap at playbackRate 1.
+        // we use an AudioBufferSourceNode as baseline.
+        // We set playbackRate to something other than 1 so the node needs to do a bit of work.
+        // This gives more stable results than having playbackRate of 1.
         const source = ctx.createBufferSource();
         const buffer = ctx.createBuffer(1, sampleRate, sampleRate);
         const chan = buffer.getChannelData(0);
