@@ -96,6 +96,7 @@ class WebAudioBenchApplication {
       new AudioBufferSourceTest(1.0, 20),
       new AudioBufferSourceTest(0.9, 8),
       new OscillatorTest(),
+      new OscillatorFrequencyTest(880),
       new GainTest('default', '', 'default'),
       new GainTest(1.0, '', '1.0'),
       new GainTest(0.9, '', '0.9'),
@@ -202,6 +203,23 @@ class WebAudioBenchApplication {
   }
 
   storeResult(name, durations) {
+    let mean = 0;
+    let stddev = 0;
+
+    for (let k = 0; k < durations.length; ++k) {
+	mean += durations[k];
+    }
+    mean = mean / durations.length;
+
+    for (let k = 0; k < durations.length; ++k) {
+      let diff = durations[k] - mean;
+      stddev += diff * diff;
+    }
+    stddev = Math.sqrt(stddev / (durations.length - 1));
+
+    console.log('mean = ', mean);
+    console.log('stddev = ', stddev);
+
     durations = durations.map((d) => Math.round(d * 1000 * 1000));
     durations.sort((a, b) => a - b);
 
@@ -216,13 +234,14 @@ class WebAudioBenchApplication {
     this.testResults[name] = min;
 
     const showDetails = durations.length >= 5;
-    this.outputResult(name, min, q1, median, q3, max, showDetails);
+    this.outputResult(name, min, q1, median, q3, max, mean, stddev, showDetails);
   }
 
-  outputResult(name, min, q1, median, q3, max, showDetails) {
+  outputResult(name, min, q1, median, q3, max, mean, stddev, showDetails) {
     const cells = [name, "" + Math.round(min)];
     if (showDetails) {
-      [min, q1, median, q3, max].map(v => "" + Math.round(v)).forEach(v => cells.push(v));
+	[min, q1, median, q3, max].map(v => "" + Math.round(v)).forEach(v => cells.push(v));
+	[mean, stddev].map(v => "" + Math.round(v*1000*1000*100)/100).forEach(v => cells.push(v));
     }
     this.outputRow(cells);
   }
