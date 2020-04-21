@@ -46,6 +46,15 @@ class WebAudioBenchApplication {
       durationInputElement.value = 20;
     }
 
+    // Update the runs and duration from the URL, if given
+    let urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('runs')) {
+      runsInputElement.value = urlParams.get('runs');
+    }
+    if (urlParams.has('sec')) {
+      durationInputElement.value = urlParams.get('sec');
+    }
+
     this.resultsTable = document.querySelector('.results-table');
     this.runButton = document.querySelector('.run-button');
     this.runButton.addEventListener('mousedown', () => {
