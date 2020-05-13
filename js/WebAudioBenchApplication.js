@@ -54,6 +54,13 @@ class WebAudioBenchApplication {
     if (urlParams.has('sec')) {
       durationInputElement.value = urlParams.get('sec');
     }
+    // Verbosity level of console logs.  Higher means more logs. 0
+    // means the least.
+    if (urlParams.has('verbosity')) {
+      this.verbosity = urlParams.get('verbosity');
+    } else {
+      this.verbosity = 99;
+    }
 
     this.resultsTable = document.querySelector('.results-table');
     this.runButton = document.querySelector('.run-button');
@@ -195,7 +202,9 @@ class WebAudioBenchApplication {
         chain = chain.then((_) => test.run(renderSeconds));
       }
       chain = chain.then((duration) => {
-        console.log('took ' + Math.round(duration * 1000) + ' ms');
+        if (this.verbosity >= 99) {
+          console.log('took ' + Math.round(duration * 1000) + ' ms');
+	}
         duration /= renderSeconds;
         durations.push(duration);
         return durations;
@@ -225,9 +234,6 @@ class WebAudioBenchApplication {
     }
     stddev = Math.sqrt(stddev / (durations.length - 1));
 
-    console.log('mean = ', mean);
-    console.log('stddev = ', stddev);
-
     durations = durations.map((d) => Math.round(d * 1000 * 1000));
     durations.sort((a, b) => a - b);
 
@@ -237,7 +243,10 @@ class WebAudioBenchApplication {
     const q3 = durations[Math.floor(durations.length * 0.75)];
     const max = durations[durations.length - 1];
 
+    console.log('Test ' + name);
     console.log('min ' + min + ' (' + durations + ')');
+    console.log('mean = ', mean);
+    console.log('stddev = ', stddev);
 
     this.testResults[name] = min;
 
