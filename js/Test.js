@@ -346,6 +346,30 @@ class OscillatorTest extends Test {
   }
 }
 
+class OscillatorAutomationTest extends Test {
+  constructor(rampType, automationRate) {
+    super('Oscillator.frequency-' + rampType + '-' + automationRate, 3);
+    this.rampType = rampType;
+    this.automationRate = automationRate;
+  }
+
+  buildGraph(ctx, last) {
+    for (let i = 0; i < this.numNodes; i++) {
+      const node = ctx.createOscillator();
+      node.frequency.automationRate = this.automationRate;
+      node.frequency.setValueAtTime(100, 0);
+      if (this.rampType = "linear") {
+          node.frequency.linearRampToValueAtTime(4000, 1000);
+      } else {
+        throw new Error('Bad rampType: ' + this.rampType);
+      }
+      node.start(0);
+      node.connect(ctx.destination);
+    }
+    return last;
+  }
+}
+
 class AudioBufferSourceTest extends Test {
   constructor(rate, numNodes) {
     super('AudioBufferSource-rate' + rate, numNodes);
