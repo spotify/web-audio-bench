@@ -113,6 +113,7 @@ class WebAudioBenchApplication {
       new AudioBufferSourceTest(0.9, 8),
       new OscillatorTest(),
       new OscillatorAutomationTest('linear', 'a-rate'),
+      new OscillatorAutomationTest('linear', 'k-rate'),
       new GainTest('default', '', 'default'),
       new GainTest(1.0, '', '1.0'),
       new GainTest(0.9, '', '0.9'),
