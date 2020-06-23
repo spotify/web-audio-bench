@@ -358,7 +358,7 @@ class OscillatorAutomationTest extends Test {
       const node = ctx.createOscillator();
       node.frequency.automationRate = this.automationRate;
       node.frequency.setValueAtTime(100, 0);
-      if (this.rampType = "linear") {
+      if (this.rampType == "linear") {
           node.frequency.linearRampToValueAtTime(4000, 1000);
       } else {
         throw new Error('Bad rampType: ' + this.rampType);
