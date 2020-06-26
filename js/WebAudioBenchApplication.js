@@ -246,7 +246,7 @@ class WebAudioBenchApplication {
     const max = durations[durations.length - 1];
 
     console.log('Test ' + name);
-    console.log(`Stats: (${min},${min},{$q1},${median},${q3},${max},${mean},${stddev})`);
+    console.log(`Stats: (${min},${min},${q1},${median},${q3},${max},${1e6 * mean},${1e6 * stddev})`);
     console.log('min ' + min + ' (' + durations + ')');
     console.log('mean = ', mean);
     console.log('stddev = ', stddev);
