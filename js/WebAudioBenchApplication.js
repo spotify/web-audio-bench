@@ -23,11 +23,27 @@ class WebAudioBenchApplication {
   constructor() {
     this.testsSelection = document.querySelector('.tests-selection select');
     const tests = this.getTestList();
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Regular expression for matching test names that we want to
+    // select for testing.  Use something like
+    // "localhost/?pattern=Oscillator" if you want to select all
+    // Oscillator tests.
+    let testPattern;
+    if (urlParams.has('pattern')) {
+	testPattern = RegExp(urlParams.get('pattern'));
+    }
+
     tests.forEach((test) => {
       const option = document.createElement('option');
       option.value = test.name;
       option.innerText = test.name;
-      option.selected = true;
+      if (testPattern) {
+	  option.selected = testPattern.test(option.value);
+      } else {
+	  option.selected = true;
+      }
       this.testsSelection.appendChild(option);
     });
 
@@ -47,7 +63,6 @@ class WebAudioBenchApplication {
     }
 
     // Update the runs and duration from the URL, if given
-    let urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('runs')) {
       runsInputElement.value = urlParams.get('runs');
     }
