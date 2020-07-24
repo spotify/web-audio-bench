@@ -371,27 +371,35 @@ class OscillatorAutomationTest extends Test {
 }
 
 class AudioBufferSourceTest extends Test {
-  constructor(rate, numNodes) {
-    super('AudioBufferSource-rate' + rate, numNodes);
+  constructor(rate, looping, numNodes) {
+    // Preserve old name if we're looping (since that's what was happening before.
+    // If we're not looping, add a suffix.
+    super('AudioBufferSource-rate' + rate + (looping ? '' : '-noloop'), numNodes);
     this.rate = rate;
+    this.looping = looping;
   }
 
   buildGraph(ctx, last) {
-    const bufferLength = ctx.sampleRate;
+    const bufferLength = this.looping ? ctx.sampleRate : ctx.length;
+
+    // Buffer for the AudioBufferSourceNode.  This can be shared
+    // between all the nodes.
+    const buffer = ctx.createBuffer(1, bufferLength, ctx.sampleRate);
+
+    // make sure it is not all zeros or Firefox will optimise away fft
+    const chan = buffer.getChannelData(0);
+    for(let i = 0; i < chan.length; i++) {
+      chan[i] = Math.sin(Math.PI * 2 * i * 440 / 44100);
+    }
+
     for (let i = 0; i < this.numNodes; i++) {
       const node = ctx.createBufferSource();
-      const buffer = ctx.createBuffer(1, bufferLength, ctx.sampleRate);
-
-      // make sure it is not all zeros or Firefox will optimise away fft
-      const chan = buffer.getChannelData(0);
-      for(let i = 0; i < chan.length; i++) {
-        chan[i] = Math.sin(Math.PI * 2 * i * 440 / 44100);
-      }
-
       node.buffer = buffer;
-      node.loopStart = 0;
-      node.loopEnd = 1;
-      node.loop = true;
+      if (this.looping) {
+        node.loopStart = 0;
+        node.loopEnd = 1;
+        node.loop = true;
+      }
       if (this.rate !== 1) {
         node.playbackRate.value = this.rate;
       }
