@@ -124,8 +124,10 @@ class WebAudioBenchApplication {
     return [
       new BiquadFilterTest('default'),
       new BiquadFilterTest(440),
-      new AudioBufferSourceTest(1.0, 20),
-      new AudioBufferSourceTest(0.9, 8),
+      new AudioBufferSourceTest(1.0, true, 20),
+      new AudioBufferSourceTest(0.9, true, 8),
+      new AudioBufferSourceTest(1.0, false, 20),
+      new AudioBufferSourceTest(0.9, false, 8),
       new OscillatorTest(),
       new OscillatorAutomationTest('linear', 'a-rate'),
       new OscillatorAutomationTest('linear', 'k-rate'),
